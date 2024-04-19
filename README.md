@@ -6,7 +6,6 @@ This command-line interface (CLI) tool generates a visual representation of the 
 
 - Generates a tree structure of the current directory.
 - Includes both files and directories in the output.
-- Uses Unicode box-drawing characters for a clean, readable output.
 
 ## Usage
 
