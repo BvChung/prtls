@@ -7,6 +7,29 @@ This command-line interface (CLI) tool generates a visual representation of the 
 - Generates a tree structure of the current directory.
 - Includes both files and directories in the output.
 
+## File Structure
+
+```bash
+.
+├── README.md
+├── assets
+│   ├── colors.go
+│   └── extension.go
+├── bin
+│   └── prtls.exe
+├── cmd
+│   └── root.go
+├── demo
+│   ├── filetree.png
+│   └── treegen.gif
+├── fstraversal
+│   ├── traversal.go
+│   └── types.go
+├── go.mod
+├── go.sum
+└── main.go
+```
+
 ## Usage
 
 To use this tool, navigate to the directory you want to visualize in your terminal and run the command:
@@ -15,15 +38,17 @@ To use this tool, navigate to the directory you want to visualize in your termin
 go run main.go
 ```
 
+# Compile to executable file
 ```bash
-Compile to executable file with go build
+go build
 
 Usage:
   ./prtls - [flags]
 
 Flags:
-  -a, --all    List all files (including hidden files), directories
-  -h, --help   help for prtls
+  No flags     List all files in current directory
+  -a, --all    Include hidden files (files prefixed with .)
+  -h, --help   Help command
   -t, --tree   Tree view of the directory
 ```
 
@@ -31,10 +56,11 @@ Flags:
 ```bash
 ./prtls -t . 
 ```
-
-**Tree Structure**
-
 ![Tree](https://github.com/BvChung/prtls/blob/main/demo/filetree.png)
-![Complex Tree](https://github.com/BvChung/prtls/blob/main/demo/treeGeneration.gif)
+
+```bash
+./prtls -t . -a
+```
+![Complex Tree](https://github.com/BvChung/prtls/blob/main/demo/treegen.gif)
 
 
