@@ -55,7 +55,7 @@ func displayTreeDirectory(path string, indent string, isLastFolder bool, showHid
 	}
 
 	lastFileIndx := getLastFileIndex(files, showHidden)
-	
+
 	for i, file := range files {
 		if !isHiddenFile(file.Name()) || showHidden {
 			var prefix, subDirectoryIndent string
