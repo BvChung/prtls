@@ -35,4 +35,6 @@ Flags:
 **Tree Structure**
 
 ![Tree](https://github.com/BvChung/prtls/blob/main/demo/filetree.png)
+![Complex Tree](https://github.com/BvChung/prtls/blob/main/demo/treeGeneration.gif)
+
 
