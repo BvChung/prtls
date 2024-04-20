@@ -34,4 +34,5 @@ Flags:
 
 **Tree Structure**
 
-![Tree](https://github.com/BvChung/prtls/blob/main/images/filetree.png)
+![Tree](https://github.com/BvChung/prtls/blob/main/demo/filetree.png)
+
