@@ -7,19 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/prtls/assets"
+	"github.com/charmbracelet/lipgloss"
 )
-
-type CmdLineFlags struct {
-	ShowHidden   bool
-	ShowTreeView bool
-	HideIcon     bool
-}
-
-type Options struct {
-	Directory string
-	Flags     CmdLineFlags
-}
 
 const (
 	IndentationSpace  = "    "
@@ -28,12 +17,14 @@ const (
 	CrossDelimiter    = "├── "
 )
 
+var dirStyle = lipgloss.NewStyle().Underline(true).Foreground(lipgloss.Color("#cd20ff"))
+
 func Dispatcher(options Options) {
 	if options.Directory == "" {
 		options.Directory = "."
 	}
 
-	fmt.Println(formatText(options.Directory))
+	fmt.Println(dirStyle.Render(options.Directory))
 	if options.Flags.ShowTreeView {
 		displayTreeDirectory(options.Directory, "", true, options.Flags.ShowHidden)
 	} else {
@@ -105,13 +96,9 @@ func getLastFileIndex(files []fs.DirEntry, showHidden bool) int {
 func formatFileOutput(prefix string, file fs.DirEntry) string {
 	var format string
 	if file.IsDir() {
-		format = fmt.Sprintf("%s%s%s%s%s", prefix, assets.Bold, assets.Pink, file.Name(), assets.Reset)
+		format = fmt.Sprintf("%s%s", prefix, dirStyle.Render(file.Name()))
 	} else {
 		format = fmt.Sprintf("%s%s", prefix, file.Name())
 	}
 	return format
-}
-
-func formatText(str string) string {
-	return fmt.Sprintf("%s%s%s%s", assets.Bold, assets.LightBlue, str, assets.Reset)
 }
