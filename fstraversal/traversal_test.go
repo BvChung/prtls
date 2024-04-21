@@ -31,7 +31,7 @@ func TestFsTreeTraversal(t *testing.T) {
 			"            ├── a.txt",
 			"            └── b.txt",
 		},
-			path: "../mockDirectory"},
+			path: "../testdata/mockDirectory"},
 	}
 
 	for _, d := range testData {

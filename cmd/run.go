@@ -1,8 +1,7 @@
-package cmd
+package main
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/prtls/fstraversal"
 	"github.com/spf13/cobra"
@@ -12,24 +11,26 @@ var flag fstraversal.CmdLineFlags
 
 var RootCommand = &cobra.Command{
 	Use:   "prtls",
-	Short: "prtls is a CLI tool with custom styling for tree and ls commands.",
-	Run:   run,
+	Short: "prtls is a CLI tool with custom styling for directory tree generation and ls commands.",
+	Run:   runCobra,
 }
 
-func Execute() {
+func run() error {
 	flagDefinition(&flag)
 	if err := RootCommand.Execute(); err != nil {
-		log.Fatalf(err.Error())
+		return err
 	}
+
+	return nil
 }
 
-func run(_ *cobra.Command, args []string) {
+func runCobra(_ *cobra.Command, args []string) {
 	if validateDirectoryArgs(args) {
 		fstraversal.Dispatcher(fstraversal.Options{Directory: args[len(args)-1], Flags: flag})
 	} else if len(args) == 0 {
 		fstraversal.Dispatcher(fstraversal.Options{Flags: flag})
 	} else {
-		fmt.Println("Usage: prtls [options] <directory_path>")
+		fmt.Println("Usage: prtls [flags] <directory_path>")
 	}
 }
 
