@@ -13,12 +13,12 @@ This command-line interface (CLI) tool generates a visual representation of the 
 .
 ├── README.md
 ├── assets
-│   ├── colors.go
 │   └── extension.go
 ├── bin
 │   └── prtls.exe
 ├── cmd
-│   └── root.go
+│   ├── main.go
+│   └── run.go
 ├── demo
 │   ├── filetree.png
 │   └── treegen.gif
@@ -28,14 +28,14 @@ This command-line interface (CLI) tool generates a visual representation of the 
 │   └── types.go
 ├── go.mod
 ├── go.sum
-├── main.go
-└── mockDirectory
-    └── b
-        └── c
-            ├── cc.py
-            └── d
-                ├── a.txt
-                └── b.txt
+└── testdata
+    └── mockDirectory
+        └── b
+            └── c
+                ├── cc.py
+                └── d
+                    ├── a.txt
+                    └── b.txt
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ go run main.go
 
 # Compile to executable file
 ```bash
-go build
+go build -o ./{path}/{executable name} ./cmd
 
 Usage:
   ./prtls - [flags]
