@@ -24,10 +24,18 @@ This command-line interface (CLI) tool generates a visual representation of the 
 │   └── treegen.gif
 ├── fstraversal
 │   ├── traversal.go
+│   ├── traversal_test.go
 │   └── types.go
 ├── go.mod
 ├── go.sum
-└── main.go
+├── main.go
+└── mockDirectory
+    └── b
+        └── c
+            ├── cc.py
+            └── d
+                ├── a.txt
+                └── b.txt
 ```
 
 ## Usage
