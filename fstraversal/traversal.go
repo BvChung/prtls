@@ -29,7 +29,7 @@ func Dispatcher(options Options) {
 
 		err := traverseFsTree(options.Directory, "", true, options.Flags.ShowHidden, &lines)
 
-		if err != nil{
+		if err != nil {
 			fmt.Print(err)
 			return
 		}
