@@ -3,7 +3,6 @@ package fstraversal
 import (
 	"fmt"
 	"io/fs"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -17,16 +16,25 @@ const (
 	CrossDelimiter    = "├── "
 )
 
-var dirStyle = lipgloss.NewStyle().Underline(true).Foreground(lipgloss.Color("#cd20ff"))
+var dirStyle = lipgloss.NewStyle().Bold(true).Underline(true).Foreground(lipgloss.Color("5"))
 
 func Dispatcher(options Options) {
 	if options.Directory == "" {
 		options.Directory = "."
 	}
 
-	fmt.Println(dirStyle.Render(options.Directory))
 	if options.Flags.ShowTreeView {
-		displayTreeDirectory(options.Directory, "", true, options.Flags.ShowHidden)
+		lines := []string{}
+		lines = append(lines, dirStyle.Render(options.Directory))
+
+		err := traverseFsTree(options.Directory, "", true, options.Flags.ShowHidden, &lines)
+
+		if err != nil{
+			fmt.Print(err)
+			return
+		}
+
+		fmt.Print(lipgloss.JoinVertical(lipgloss.Left, lines...))
 	} else {
 		displayListDirectory(options.Directory, options.Flags.ShowHidden)
 	}
@@ -42,16 +50,16 @@ func displayListDirectory(path string, showHidden bool) {
 
 	for _, file := range files {
 		if !isHiddenFile(file.Name()) || showHidden {
-			fmt.Println(formatFileOutput("", file))
+			fmt.Println(formatOutputText("", file.Name(), file.IsDir()))
 		}
 	}
 }
 
-func displayTreeDirectory(path string, indent string, isLastFolder bool, showHidden bool) {
+func traverseFsTree(path string, indent string, isLastFolder bool, showHidden bool, lines *[]string) error {
 	files, err := os.ReadDir(path)
 
 	if err != nil {
-		log.Fatalf("Error reading directory: %s\n", err)
+		return fmt.Errorf("error reading directory, %w", err)
 	}
 
 	lastFileIndx := getLastFileIndex(files, showHidden)
@@ -60,7 +68,7 @@ func displayTreeDirectory(path string, indent string, isLastFolder bool, showHid
 		if !isHiddenFile(file.Name()) || showHidden {
 			var prefix, subDirectoryIndent string
 
-			if i == lastFileIndx && isLastFolder || i == lastFileIndx {
+			if (i == lastFileIndx && isLastFolder) || i == lastFileIndx {
 				prefix = indent + CornerDelimiter
 				subDirectoryIndent = indent + IndentationSpace
 			} else {
@@ -68,15 +76,17 @@ func displayTreeDirectory(path string, indent string, isLastFolder bool, showHid
 				subDirectoryIndent = indent + VerticalDelimiter
 			}
 
-			fmt.Println(formatFileOutput(prefix, file))
+			*lines = append(*lines, formatOutputText(prefix, file.Name(), file.IsDir()))
 
 			if file.IsDir() {
 				nextFilePath := filepath.Join(path, file.Name())
 				newIsLastFolder := i == lastFileIndx && isLastFolder
-				displayTreeDirectory(nextFilePath, subDirectoryIndent, newIsLastFolder, showHidden)
+				traverseFsTree(nextFilePath, subDirectoryIndent, newIsLastFolder, showHidden, lines)
 			}
 		}
 	}
+
+	return err
 }
 
 // Files prefixed with . are hidden from Unix ls command
@@ -90,15 +100,17 @@ func getLastFileIndex(files []fs.DirEntry, showHidden bool) int {
 			return i
 		}
 	}
+
 	return -1
 }
 
-func formatFileOutput(prefix string, file fs.DirEntry) string {
+func formatOutputText(prefix string, fileName string, isDir bool) string {
 	var format string
-	if file.IsDir() {
-		format = fmt.Sprintf("%s%s", prefix, dirStyle.Render(file.Name()))
+
+	if isDir {
+		format = fmt.Sprintf("%s%s", prefix, dirStyle.Render(fileName))
 	} else {
-		format = fmt.Sprintf("%s%s", prefix, file.Name())
+		format = fmt.Sprintf("%s%s", prefix, fileName)
 	}
 	return format
 }
