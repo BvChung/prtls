@@ -42,11 +42,12 @@ This command-line interface (CLI) tool generates a visual representation of the 
 
 To use this tool, navigate to the directory you want to visualize in your terminal and run the command:
 
+## Development
 ```bash
-go run main.go
+go run ./cmd . -[flags]
 ```
 
-# Compile to executable file
+## Compiling to executable file
 ```bash
 go build -o ./{path}/{executable name} ./cmd
 
