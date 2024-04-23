@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"testing"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,7 +25,8 @@ func TestFsTreeTraversal(t *testing.T) {
 		expected []string
 		path     string
 	}{
-		{expected: []string{"└── " + dirStyle.Render("b"),
+		{expected: []string{
+			"└── " + dirStyle.Render("b"),
 			"    └── " + dirStyle.Render("c"),
 			"        ├── cc.py",
 			"        └── " + dirStyle.Render("d"),
@@ -54,6 +56,42 @@ func TestFsTreeTraversal(t *testing.T) {
 		err := traverseFsTree(path, "", true, false, &lines)
 		assert.EqualError(err, expected)
 	})
+}
+
+func TestTreeBuilding(t *testing.T) {
+	assert := assert.New(t)
+
+	testData := []struct {
+		expected []string
+		path     string
+	}{
+		{
+			expected: []string{
+				rootStyle.Render("."),
+				"└── " + dirStyle.Render("b"),
+				"    └── " + dirStyle.Render("c"),
+				"        ├── cc.py",
+				"        └── " + dirStyle.Render("d"),
+				"            ├── a.txt",
+				"            └── b.txt",
+			},
+			path: "../testdata/mockDirectory"},
+	}
+
+	for _, d := range testData {
+		t.Run("Test tree building", func(t *testing.T) {
+			lines := []string{}
+
+			if err := traverseFsTree(d.path, "", true, false, &lines); err != nil {
+				t.Fatal(err)
+			}
+
+			expectedTree := lipgloss.JoinVertical(lipgloss.Left, d.expected...)
+			actualTree := createTree(d.path, false, ".")
+
+			assert.Equal(expectedTree, actualTree)
+		})
+	}
 }
 
 func TestTextFormatting(t *testing.T) {
