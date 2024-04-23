@@ -3,15 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 
 	tea "github.com/charmbracelet/bubbletea"
-	tealog "github.com/charmbracelet/log"
 	"github.com/prtls/fstraversal"
 )
 
 func main() {
 	if err := run(); err != nil {
-		tealog.Fatal(err.Error())
+		log.Fatal(err.Error())
 	}
 }
 

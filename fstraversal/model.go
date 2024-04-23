@@ -8,7 +8,6 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/charmbracelet/log"
 )
 
 type model struct {
@@ -132,7 +131,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "s":
 			cleanedTree := cleanTree(m.treeStructure)
 			if err := writeToFile(m.outputFilePath, []byte(cleanedTree)); err != nil {
-				log.Error(err)
 				return m, tea.Quit
 			}
 		case "backspace", "b":
