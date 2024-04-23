@@ -2,10 +2,21 @@
 
 This command-line interface (CLI) terminal user interface allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories.
 
-## Features
+## Example
+```bash
+./prtls -p . -o file.txt
+```
+### Directory UI
+![dirs](https://github.com/BvChung/prtls/blob/main/demo/dirs.png)
 
-- Generates a tree structure of the current directory.
-- Includes both files and directories in the output.
+### Tree Viewer UI
+![tree](https://github.com/BvChung/prtls/blob/main/demo/tree.png)
+
+### Directory Navigation
+![Navigation](https://github.com/BvChung/prtls/blob/main/demo/demo.gif)
+
+### Tree Creation
+![Tree Gif](https://github.com/BvChung/prtls/blob/main/demo/treegen.gif)
 
 ## File Structure
 
@@ -58,21 +69,5 @@ Flags:
   -p           Initial directory path
   -o           Output file path
 ```
-
-## Example
-```bash
-./prtls -p . -o file.txt
-```
-### Directory UI
-![dirs](https://github.com/BvChung/prtls/blob/main/demo/dirs.png)
-
-### Tree Viewer UI
-![tree](https://github.com/BvChung/prtls/blob/main/demo/tree.png)
-
-### Directory Navigation
-![Navigation](https://github.com/BvChung/prtls/blob/main/demo/demo.gif)
-
-### Tree Creation
-![Tree Gif](https://github.com/BvChung/prtls/blob/main/demo/treegen.gif)
 
 
