@@ -1,6 +1,6 @@
 # File Directory Tree Generator
 
-This command-line interface (CLI) tool generates a visual representation of the directory tree structure for the current directory. It's a handy utility for quickly visualizing the layout of your project's files and directories.
+This command-line interface (CLI) terminal user interface allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories.
 
 ## Features
 
@@ -10,30 +10,30 @@ This command-line interface (CLI) tool generates a visual representation of the 
 ## File Structure
 
 ```bash
-.
-├── README.md
-├── assets
-│   └── extension.go
-├── bin
-│   └── prtls.exe
-├── cmd
-│   ├── main.go
-│   └── run.go
-├── demo
-│   ├── filetree.png
-│   └── treegen.gif
-├── fstraversal
-│   ├── traversal.go
-│   ├── traversal_test.go
-│   └── types.go
-├── go.mod
-├── go.sum
-└── testdata
-    └── mockDirectory
-        └── b
-            └── c
-                ├── cc.py
-                └── d
+.                            
+├── README.md                
+├── bin                      
+│   └── prtls.exe            
+├── cmd                      
+│   └── main.go              
+├── demo                     
+│   ├── filetree.png         
+│   └── treegen.gif          
+├── file.txt                 
+├── fstraversal              
+│   ├── model.go             
+│   ├── output.go            
+│   ├── traversal.go         
+│   └── traversal_test.go    
+├── go.mod                   
+├── go.sum                   
+├── prt                      
+└── testdata                 
+    └── mockDirectory        
+        └── b                
+            └── c            
+                ├── cc.py    
+                └── d        
                     ├── a.txt
                     └── b.txt
 ```
@@ -55,21 +55,24 @@ Usage:
   ./prtls - [flags]
 
 Flags:
-  No flags     List all files in current directory
-  -a, --all    Include hidden files (files prefixed with .)
-  -h, --help   Help command
-  -t, --tree   Tree view of the directory
+  -p           Initial directory path
+  -o           Output file path
 ```
 
 ## Example
 ```bash
-./prtls -t . 
+./prtls -p . -o file.txt
 ```
-![Tree](https://github.com/BvChung/prtls/blob/main/demo/filetree.png)
+### Directory UI
+![dirs](https://github.com/BvChung/prtls/blob/main/demo/dirs.png)
 
-```bash
-./prtls -t . -a
-```
-![Complex Tree](https://github.com/BvChung/prtls/blob/main/demo/treegen.gif)
+### Tree Viewer UI
+![tree](https://github.com/BvChung/prtls/blob/main/demo/tree.png)
+
+### Directory Navigation
+![Navigation](https://github.com/BvChung/prtls/blob/main/demo/demo.gif)
+
+### Tree Creation
+![Tree Gif](https://github.com/BvChung/prtls/blob/main/demo/treegen.gif)
 
 
