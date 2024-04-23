@@ -2,6 +2,12 @@
 
 This command-line interface (CLI) terminal user interface allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories.
 
+# Tech
+- [Go](https://go.dev/)
+- [Bubble Tea](https://github.com/charmbracelet/bubbletea)
+- [Bubbles](https://github.com/charmbracelet/bubbles)
+- [Lip Gloss](https://github.com/charmbracelet/lipgloss)
+
 ## Example
 ```bash
 ./prtls -p . -o file.txt
