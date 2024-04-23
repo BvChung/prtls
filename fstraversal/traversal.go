@@ -16,43 +16,12 @@ const (
 	CrossDelimiter    = "├── "
 )
 
-var dirStyle = lipgloss.NewStyle().Bold(true).Underline(true).Foreground(lipgloss.Color("5"))
+func createTree(directory string, showHidden bool) string {
+	lines := []string{}
+	lines = append(lines, rootStyle.Render("."))
+	traverseFsTree(directory, "", true, showHidden, &lines)
 
-func Dispatcher(options Options) {
-	if options.Directory == "" {
-		options.Directory = "."
-	}
-
-	if options.Flags.ShowTreeView {
-		lines := []string{}
-		lines = append(lines, dirStyle.Render(options.Directory))
-
-		err := traverseFsTree(options.Directory, "", true, options.Flags.ShowHidden, &lines)
-
-		if err != nil {
-			fmt.Print(err)
-			return
-		}
-
-		fmt.Print(lipgloss.JoinVertical(lipgloss.Left, lines...))
-	} else {
-		displayListDirectory(options.Directory, options.Flags.ShowHidden)
-	}
-}
-
-func displayListDirectory(path string, showHidden bool) {
-	files, err := os.ReadDir(path)
-
-	if err != nil {
-		fmt.Printf("Error reading directory: %s\n", err.Error())
-		return
-	}
-
-	for _, file := range files {
-		if !isHiddenFile(file.Name()) || showHidden {
-			fmt.Println(formatOutputText("", file.Name(), file.IsDir()))
-		}
-	}
+	return lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
 
 func traverseFsTree(path string, indent string, isLastFolder bool, showHidden bool, lines *[]string) error {
