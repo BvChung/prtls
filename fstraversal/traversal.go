@@ -16,9 +16,9 @@ const (
 	CrossDelimiter    = "├── "
 )
 
-func createTree(directory string, showHidden bool) string {
+func createTree(directory string, showHidden bool, root string) string {
 	lines := []string{}
-	lines = append(lines, rootStyle.Render("."))
+	lines = append(lines, rootStyle.Render(root))
 	traverseFsTree(directory, "", true, showHidden, &lines)
 
 	return lipgloss.JoinVertical(lipgloss.Left, lines...)
