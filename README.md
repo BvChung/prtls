@@ -8,6 +8,14 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 - [Bubbles](https://github.com/charmbracelet/bubbles)
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss)
 
+## Demo
+```bash
+./prtls -p . -o file.txt
+```
+<div align="center">
+  <video src="https://github.com/BvChung/prtls/assets/88690065/b8b31ff5-37b1-4517-a67f-b5301551de8e"></video>
+</div>
+
 ## File Structure
 
 ```bash
@@ -40,24 +48,6 @@ This command-line interface (CLI) terminal user interface allows users to dynami
                     ├── a.txt
                     └── b.txt
 ```
-
-## Example
-```bash
-./prtls -p . -o file.txt
-```
-### Directory UI
-![dirs](https://github.com/BvChung/prtls/blob/main/demo/dirs.png)
-
-### Tree Viewer UI
-![tree](https://github.com/BvChung/prtls/blob/main/demo/tree.png)
-
-### Directory Navigation
-![Navigation](https://github.com/BvChung/prtls/blob/main/demo/demo.gif)
-
-### Tree Creation
-![Tree Gif](https://github.com/BvChung/prtls/blob/main/demo/treegen.gif)
-
-## Usage
 
 To use this tool, navigate to the directory you want to visualize in your terminal and run the command:
 
