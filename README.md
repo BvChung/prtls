@@ -8,6 +8,39 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 - [Bubbles](https://github.com/charmbracelet/bubbles)
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss)
 
+## File Structure
+
+```bash
+.                            
+├── README.md                
+├── bin                      
+│   └── prtls.exe            
+├── cmd                      
+│   └── main.go              
+├── demo                     
+│   ├── demo.gif             
+│   ├── dirs.png             
+│   ├── tree.png             
+│   └── treegen.gif          
+├── fstraversal              
+│   ├── model.go             
+│   ├── output.go            
+│   ├── output_test.go       
+│   ├── traversal.go         
+│   └── traversal_test.go    
+├── go.mod                   
+├── go.sum                   
+├── prt.exe                  
+└── testdata                 
+    └── mockDirectory        
+        └── b                
+            └── c            
+                ├── cc.py    
+                └── d        
+                    ├── a.txt
+                    └── b.txt
+```
+
 ## Example
 ```bash
 ./prtls -p . -o file.txt
@@ -23,37 +56,6 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 
 ### Tree Creation
 ![Tree Gif](https://github.com/BvChung/prtls/blob/main/demo/treegen.gif)
-
-## File Structure
-
-```bash
-.                            
-├── README.md                
-├── bin                      
-│   └── prtls.exe            
-├── cmd                      
-│   └── main.go              
-├── demo                     
-│   ├── filetree.png         
-│   └── treegen.gif          
-├── file.txt                 
-├── fstraversal              
-│   ├── model.go             
-│   ├── output.go            
-│   ├── traversal.go         
-│   └── traversal_test.go    
-├── go.mod                   
-├── go.sum                   
-├── prt                      
-└── testdata                 
-    └── mockDirectory        
-        └── b                
-            └── c            
-                ├── cc.py    
-                └── d        
-                    ├── a.txt
-                    └── b.txt
-```
 
 ## Usage
 
