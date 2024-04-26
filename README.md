@@ -12,7 +12,7 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 ./prtls -p . -o file.txt
 ```
 <div align="center">
-  <video src="https://github.com/BvChung/prtls/assets/88690065/b8b31ff5-37b1-4517-a67f-b5301551de8e"></video>
+  <video src="https://github.com/BvChung/prtls/assets/88690065/af760cbf-0266-4646-a0fb-104de318e36d"></video>
 </div>
 
 ## File Structure
@@ -36,8 +36,8 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 │   ├── traversal.go         
 │   └── traversal_test.go    
 ├── go.mod                   
-├── go.sum                   
-├── prt.exe                  
+├── go.sum                                   
+├── prtls.exe                
 └── testdata                 
     └── mockDirectory        
         └── b                
@@ -57,14 +57,17 @@ go run ./cmd . -[flags]
 
 ## Compiling to executable file
 ```bash
-go build -o ./{path}/{executable name} ./cmd
+go build -o ./{path}/{executable name} ./cmd/
 
 Usage:
   ./prtls - [flags]
 
 Flags:
-  -p           Initial directory path
-  -o           Output file path
+  -h help command
+  -o string
+        -o, -o=, --o string     output file path
+  -p string
+        -p, -p=, --p string     initial directory path (defaults to current directory) (default ".")
 ```
 
 
