@@ -75,8 +75,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.fpActive = false
 				m.showTree = true
 				m.viewActive = true
-				m.treeStructure = treePaddingStyle.Render(createTree(m.currentDir, m.filepicker.ShowHidden, "."))
-				m.viewport.SetContent(m.treeStructure)
+				m.treeStructure = createTree(m.currentDir, m.filepicker.ShowHidden, ".")
+				m.viewport.SetContent(treePaddingStyle.Render(m.treeStructure))
 			case "backspace", "b":
 				m.showTree = false
 			case "ctrl+c", "q":
