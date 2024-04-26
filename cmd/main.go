@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -18,11 +17,9 @@ func main() {
 func run() error {
 	var initPath string
 	var outputPath string
-	flag.StringVar(&initPath, "p", ".", "-p | -p=")
-	flag.StringVar(&outputPath, "o", "", "-o | -o=")
+	flag.StringVar(&initPath, "p", ".", "-p, -p=, --p string	initial directory path (defaults to current directory)")
+	flag.StringVar(&outputPath, "o", "", "-o, -o=, --o string	output file path")
 	flag.Parse()
-
-	fmt.Println(outputPath)
 
 	m := fstraversal.NewModel(initPath, outputPath)
 
