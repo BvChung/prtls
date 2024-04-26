@@ -16,13 +16,9 @@ type model struct {
 	showTree       bool
 	treeStructure  string
 	outputFilePath string
-
 	viewport   viewport.Model
 	viewActive bool
-
 	currentDir  string
-	selectedDir string
-
 	content  string
 	ready    bool
 	quitting bool
@@ -30,13 +26,18 @@ type model struct {
 
 var (
 	infoStyle = lipgloss.NewStyle().
-			BorderStyle(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("212")).
+			Border(lipgloss.NormalBorder(), false, false, true, false).
+			BorderForeground(lipgloss.Color("#AA99FF")).
+			Foreground(lipgloss.Color("#AA99FF")).
 			Bold(true).
 			Padding(0, 1)
 
-	sepStyle    = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("99"))
-	helperStyle = lipgloss.NewStyle().Bold(true)
+	commandStyle = lipgloss.NewStyle().Bold(true).Padding(0, 0, 1, 1)
+	headerStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#AA99FF"))
+	roundedBorderStyle  = lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(lipgloss.Color("#AA99FF")).Padding(0, 1)
+	paddingBotStyle  = lipgloss.NewStyle().PaddingBottom(1)
+	treePaddingStyle     = lipgloss.NewStyle().Padding(0, 0, 1, 1)
+	boldStyle = lipgloss.NewStyle().Bold(true)
 	dirStyle    = lipgloss.NewStyle().Bold(true).Underline(true).Foreground(lipgloss.Color("99"))
 	rootStyle   = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("212"))
 )
@@ -52,7 +53,6 @@ func NewModel(initPath string, outputFilePath string) model {
 		fpActive:       true,
 		viewActive:     false,
 		currentDir:     initPath,
-		selectedDir:    initPath,
 		outputFilePath: outputFilePath,
 	}
 }
@@ -75,7 +75,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.fpActive = false
 				m.showTree = true
 				m.viewActive = true
-				m.treeStructure = createTree(m.currentDir, m.filepicker.ShowHidden, ".")
+				m.treeStructure = treePaddingStyle.Render(createTree(m.currentDir, m.filepicker.ShowHidden, "."))
 				m.viewport.SetContent(m.treeStructure)
 			case "backspace", "b":
 				m.showTree = false
@@ -164,21 +164,22 @@ func (m model) View() string {
 }
 
 func (m model) headerView() string {
-	return infoStyle.Render("Current Directory: " + m.filepicker.Styles.Selected.Render(m.currentDir))
+	return infoStyle.Render("Current Directory: " + m.currentDir)
 }
 
 func (m model) viewFooterView() string {
 	cmds := []string{"↑/↓/scroll move", "s save", "b/backspace return", "q/ctrl+c quit"}
-	s := infoStyle.Render(buildHelperCmdString(cmds))
-	info := infoStyle.Render(fmt.Sprintf("%3.f%%", m.viewport.ScrollPercent()*100))
-	line := strings.Repeat("─", max(0, m.viewport.Width-lipgloss.Width(info)-lipgloss.Width(s)))
-	return lipgloss.JoinHorizontal(lipgloss.Center, s, line, info)
+	cmdStr := commandStyle.Render(buildHelperCmdString(cmds))
+	scrollPercentage := paddingBotStyle.Render(roundedBorderStyle.Render(headerStyle.Render(fmt.Sprintf("%3.f%%", m.viewport.ScrollPercent()*100))))
+
+	line := strings.Repeat(" ", max(0, m.viewport.Width-lipgloss.Width(scrollPercentage) - lipgloss.Width(cmdStr)))
+	return lipgloss.JoinHorizontal(lipgloss.Center, cmdStr, line, scrollPercentage)
 }
 
 func (m model) fpFooterView() string {
-	cmds := []string{"↑/↓/←/→ move", "t show dir hierarchy", "q/ctrl+c quit"}
+	cmds := []string{"↑/↓/←/→ move", "t show dir tree", "q/ctrl+c quit"}
 
-	return helperStyle.Render(buildHelperCmdString(cmds))
+	return buildHelperCmdString(cmds)
 }
 
 func buildHelperCmdString(cmds []string) string {
@@ -186,9 +187,9 @@ func buildHelperCmdString(cmds []string) string {
 
 	for idx, s := range cmds {
 		if idx == len(cmds)-1 {
-			b.WriteString(helperStyle.Render(s))
+			b.WriteString(boldStyle.Render(s))
 		} else {
-			b.WriteString(fmt.Sprintf("%s %s ", helperStyle.Render(s), sepStyle.Render("•")))
+			b.WriteString(fmt.Sprintf("%s %s ", boldStyle.Render(s), headerStyle.Render("•")))
 		}
 	}
 
