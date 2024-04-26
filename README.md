@@ -5,7 +5,6 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 # Tech
 - [Go](https://go.dev/)
 - [Bubble Tea](https://github.com/charmbracelet/bubbletea)
-- [Bubbles](https://github.com/charmbracelet/bubbles)
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss)
 
 ## Demo
