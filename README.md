@@ -9,7 +9,10 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 
 ## Demo
 ```bash
-./prtls -p . -o file.txt
+
+Build executable: go build -o ./prtls.exe ./cmd
+
+./prtls.exe -p . -o file.txt
 ```
 <div align="center">
   <video src="https://github.com/BvChung/prtls/assets/88690065/af760cbf-0266-4646-a0fb-104de318e36d"></video>
@@ -57,7 +60,7 @@ go run ./cmd . -[flags]
 
 ## Compiling to executable file
 ```bash
-go build -o ./{{executable name} ./cmd
+go build -o ./{executable name} ./cmd
 
 Usage:
   ./prtls - [flags]
