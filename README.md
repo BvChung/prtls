@@ -57,7 +57,7 @@ go run ./cmd . -[flags]
 
 ## Compiling to executable file
 ```bash
-go build -o ./{path}/{executable name} ./cmd/
+go build -o ./{{executable name} ./cmd
 
 Usage:
   ./prtls - [flags]
