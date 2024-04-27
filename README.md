@@ -3,12 +3,12 @@
 This command-line interface (CLI) terminal user interface allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories.
 
 ## Table of Contents
-- [Features](#tech)
+- [Technologies](#tech)
 - [Usage](#usage)
 - [Demo](#demo)
 - [Development](#dev)
 
-# Tech <a name="tech"></a>
+## Tech <a name="tech"></a>
 - [Go](https://go.dev/)
 - [Bubble Tea](https://github.com/charmbracelet/bubbletea)
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss)
