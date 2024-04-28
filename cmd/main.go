@@ -17,7 +17,7 @@ func main() {
 func run() error {
 	var initPath string
 	var outputPath string
-	flag.StringVar(&initPath, "p", ".", "-p, -p=, --p string	initial directory path (defaults to current directory)")
+	flag.StringVar(&initPath, "p", ".", "-p, -p=, --p string	optional initial directory path (defaults to current directory)")
 	flag.StringVar(&outputPath, "o", "", "-o, -o=, --o string	output file path")
 	flag.Parse()
 
