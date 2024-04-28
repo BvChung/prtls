@@ -36,7 +36,7 @@ Build executable: go build -o ./prtls.exe ./cmd
 ./prtls.exe -p . -o file.txt
 ```
 <div align="center">
-  <video src="https://github.com/BvChung/prtls/assets/88690065/af760cbf-0266-4646-a0fb-104de318e36d"></video>
+  <video src="https://github.com/BvChung/prtls/assets/88690065/8acd1402-fc12-4f58-9091-dfb03df87062"></video>
 </div>
 
 ## File Structure
