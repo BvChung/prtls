@@ -15,15 +15,15 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 
 ## Usage <a name="usage"></a>
 ```bash
-go build -o ./{executable name} ./cmd
-
 Usage:
   ./prtls - [flags]
 
 Flags:
-  -h help command
+  -h, --h, -help, --help        help command
+
   -o string
         -o, -o=, --o string     output file path
+
   -p string
         -p, -p=, --p string     optional initial directory path, defaults to current directory (default ".")
 ```
