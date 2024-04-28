@@ -25,7 +25,7 @@ Flags:
   -o string
         -o, -o=, --o string     output file path
   -p string
-        -p, -p=, --p string     initial directory path (defaults to current directory) (default ".")
+        -p, -p=, --p string     optional initial directory path, defaults to current directory (default ".")
 ```
 
 ## Demo <a name="demo"></a>
