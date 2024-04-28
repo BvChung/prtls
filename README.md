@@ -2,14 +2,38 @@
 
 This command-line interface (CLI) terminal user interface allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories.
 
-# Tech
+## Table of Contents
+- [Technologies](#tech)
+- [Usage](#usage)
+- [Demo](#demo)
+- [Development](#dev)
+
+## Tech <a name="tech"></a>
 - [Go](https://go.dev/)
 - [Bubble Tea](https://github.com/charmbracelet/bubbletea)
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss)
 
-## Demo
+## Usage <a name="usage"></a>
 ```bash
-./prtls -p . -o file.txt
+go build -o ./{executable name} ./cmd
+
+Usage:
+  ./prtls - [flags]
+
+Flags:
+  -h help command
+  -o string
+        -o, -o=, --o string     output file path
+  -p string
+        -p, -p=, --p string     optional initial directory path, defaults to current directory (default ".")
+```
+
+## Demo <a name="demo"></a>
+```bash
+
+Build executable: go build -o ./prtls.exe ./cmd
+
+./prtls.exe -p . -o file.txt
 ```
 <div align="center">
   <video src="https://github.com/BvChung/prtls/assets/88690065/af760cbf-0266-4646-a0fb-104de318e36d"></video>
@@ -50,24 +74,7 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 
 To use this tool, navigate to the directory you want to visualize in your terminal and run the command:
 
-## Development
+## Development <a name="dev"></a>
 ```bash
 go run ./cmd . -[flags]
 ```
-
-## Compiling to executable file
-```bash
-go build -o ./{path}/{executable name} ./cmd/
-
-Usage:
-  ./prtls - [flags]
-
-Flags:
-  -h help command
-  -o string
-        -o, -o=, --o string     output file path
-  -p string
-        -p, -p=, --p string     initial directory path (defaults to current directory) (default ".")
-```
-
-
