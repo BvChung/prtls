@@ -16,12 +16,12 @@ type model struct {
 	showTree       bool
 	treeStructure  string
 	outputFilePath string
-	viewport   viewport.Model
-	viewActive bool
-	currentDir  string
-	content  string
-	ready    bool
-	quitting bool
+	viewport       viewport.Model
+	viewActive     bool
+	currentDir     string
+	content        string
+	ready          bool
+	quitting       bool
 }
 
 var (
@@ -32,24 +32,19 @@ var (
 			Bold(true).
 			Padding(0, 1)
 
-	commandStyle = lipgloss.NewStyle().Bold(true).Padding(0, 0, 1, 1)
-	headerStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#AA99FF"))
-	roundedBorderStyle  = lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(lipgloss.Color("#AA99FF")).Padding(0, 1)
-	paddingBotStyle  = lipgloss.NewStyle().PaddingBottom(1)
-	treePaddingStyle     = lipgloss.NewStyle().Padding(0, 0, 1, 1)
-	boldStyle = lipgloss.NewStyle().Bold(true)
-	dirStyle    = lipgloss.NewStyle().Bold(true).Underline(true).Foreground(lipgloss.Color("99"))
-	rootStyle   = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("212"))
+	commandStyle       = lipgloss.NewStyle().Bold(true).Padding(0, 0, 0, 1)
+	headerStyle        = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#AA99FF"))
+	roundedBorderStyle = lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(lipgloss.Color("#AA99FF")).Padding(0, 1)
+	treePaddingStyle   = lipgloss.NewStyle().Padding(0, 0, 1, 1)
+	boldStyle          = lipgloss.NewStyle().Bold(true)
+	dirStyle           = lipgloss.NewStyle().Bold(true).Underline(true).Foreground(lipgloss.Color("99"))
+	rootStyle          = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("212"))
+	emptyDirectory     = lipgloss.NewStyle().Foreground(lipgloss.Color("240")).PaddingLeft(1).SetString("No Files Found.")
 )
 
 func NewModel(initPath string, outputFilePath string) model {
-	fp := filepicker.New()
-	fp.DirAllowed = true
-	fp.FileAllowed = false
-	fp.CurrentDirectory = initPath
-
 	return model{
-		filepicker:     fp,
+		filepicker:     initFilePicker(initPath),
 		fpActive:       true,
 		viewActive:     false,
 		currentDir:     initPath,
@@ -92,16 +87,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			viewHeaderHeight := lipgloss.Height(m.headerView())
 			viewFooterHeight := lipgloss.Height(m.viewFooterView())
 			verticalMarginHeight := viewHeaderHeight + viewFooterHeight
-
+			
+			// Delay viewport model creation to obtain full terminal height to allow scrolling
 			if !m.ready {
-				m.viewport = viewport.New(msg.Width, msg.Height-verticalMarginHeight)
-				m.viewport.YPosition = viewHeaderHeight
-				m.viewport.HighPerformanceRendering = false
-
-				m.viewport.SetContent(m.content)
+				m.initViewport(msg, verticalMarginHeight, viewHeaderHeight)
 				m.ready = true
-
-				m.viewport.YPosition = viewHeaderHeight + 1
 			} else {
 				m.viewport.Width = msg.Width
 				m.viewport.Height = msg.Height - verticalMarginHeight
@@ -111,35 +101,30 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.filepicker, cmd = m.filepicker.Update(msg)
 		cmds = append(cmds, cmd)
 		m.currentDir = m.filepicker.CurrentDirectory
+	} else {
+		switch msg := msg.(type) {
+		case tea.WindowSizeMsg:
+			headerHeight := lipgloss.Height(m.headerView())
+			footerHeight := lipgloss.Height(m.viewFooterView())
+			verticalMarginHeight := headerHeight + footerHeight
 
-		m.viewport, cmd = m.viewport.Update(msg)
-		cmds = append(cmds, cmd)
-
-		return m, tea.Batch(cmds...)
-	}
-
-	switch msg := msg.(type) {
-	case tea.WindowSizeMsg:
-		headerHeight := lipgloss.Height(m.headerView())
-		footerHeight := lipgloss.Height(m.viewFooterView())
-		verticalMarginHeight := headerHeight + footerHeight
-
-		m.viewport.Width = msg.Width
-		m.viewport.Height = msg.Height - verticalMarginHeight
-	case tea.KeyMsg:
-		switch msg.String() {
-		case "s":
-			cleanedTree := cleanTree(m.treeStructure)
-			if err := writeToFile(m.outputFilePath, []byte(cleanedTree)); err != nil {
+			m.viewport.Width = msg.Width
+			m.viewport.Height = msg.Height - verticalMarginHeight
+		case tea.KeyMsg:
+			switch msg.String() {
+			case "enter":
+				cleanedTree := cleanTree(m.treeStructure)
+				if err := writeToFile(m.outputFilePath, []byte(cleanedTree)); err != nil {
+					return m, tea.Quit
+				}
+			case "backspace", "b":
+				m.showTree = false
+				m.fpActive = true
+				m.viewActive = false
+			case "ctrl+c", "q":
+				m.quitting = true
 				return m, tea.Quit
 			}
-		case "backspace", "b":
-			m.showTree = false
-			m.fpActive = true
-			m.viewActive = false
-		case "ctrl+c", "q":
-			m.quitting = true
-			return m, tea.Quit
 		}
 	}
 
@@ -147,7 +132,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	cmds = append(cmds, cmd)
 
 	return m, tea.Batch(cmds...)
-
 }
 
 func (m model) View() string {
@@ -158,9 +142,43 @@ func (m model) View() string {
 	if m.viewActive && m.showTree {
 		return fmt.Sprintf("%s\n%s\n%s", m.headerView(), m.viewport.View(), m.viewFooterView())
 	} else {
-		return fmt.Sprintf("%s\n%s%s", m.headerView(), m.filepicker.View(), m.fpFooterView())
+		return fmt.Sprintf("%s\n%s\n%s", m.headerView(), m.filepicker.View(), m.fpFooterView())
 	}
 
+}
+
+func initFilePicker(initPath string) filepicker.Model {
+	fp := filepicker.New()
+	fp.DirAllowed = true
+	fp.FileAllowed = false
+	fp.CurrentDirectory = initPath
+	fp.KeyMap.Up.SetKeys("w", "up")
+	fp.KeyMap.Down.SetKeys("s", "down")
+	fp.KeyMap.GoToTop.SetKeys("F")
+	fp.KeyMap.GoToLast.SetKeys("f")
+	fp.KeyMap.Open.SetKeys("right", "enter", "d")
+	fp.KeyMap.Back.SetKeys("backspace", "left", "a")
+	fp.KeyMap.PageDown.Unbind()
+	fp.KeyMap.PageUp.Unbind()
+	fp.Styles.EmptyDirectory = emptyDirectory
+
+	return fp
+}
+
+func (m *model) initViewport(msg tea.WindowSizeMsg, verticalMarginHeight, viewHeaderHeight int) {
+	m.viewport = viewport.New(msg.Width, msg.Height-verticalMarginHeight)
+
+	m.viewport.KeyMap.Up.SetKeys("w", "up")
+	m.viewport.KeyMap.Down.SetKeys("s", "down")
+	m.viewport.KeyMap.PageDown.SetKeys("f")
+	m.viewport.KeyMap.PageUp.SetKeys("F")
+	m.viewport.KeyMap.HalfPageDown.Unbind()
+	m.viewport.KeyMap.HalfPageUp.Unbind()
+
+	m.viewport.YPosition = viewHeaderHeight
+	m.viewport.HighPerformanceRendering = false
+	m.viewport.SetContent(m.content)
+	m.viewport.YPosition = viewHeaderHeight + 1
 }
 
 func (m model) headerView() string {
@@ -168,16 +186,17 @@ func (m model) headerView() string {
 }
 
 func (m model) viewFooterView() string {
-	cmds := []string{"↑/↓/scroll move", "s save", "b/backspace return", "q/ctrl+c quit"}
-	cmdStr := commandStyle.Render(buildHelperCmdString(cmds))
-	scrollPercentage := paddingBotStyle.Render(roundedBorderStyle.Render(headerStyle.Render(fmt.Sprintf("%3.f%%", m.viewport.ScrollPercent()*100))))
+	cmds := []string{"↑/↓/scroll or w/s (move)", "F (page up)", "f (page down)", "enter (save)", "b/backspace (return)", "q/ctrl+c (quit)"}
 
-	line := strings.Repeat(" ", max(0, m.viewport.Width-lipgloss.Width(scrollPercentage) - lipgloss.Width(cmdStr)))
+	cmdStr := commandStyle.Render(buildHelperCmdString(cmds))
+	scrollPercentage := roundedBorderStyle.Render(headerStyle.Render(fmt.Sprintf("%3.f%%", m.viewport.ScrollPercent()*100)))
+	line := strings.Repeat(" ", max(0, m.viewport.Width-lipgloss.Width(scrollPercentage)-lipgloss.Width(cmdStr)))
+
 	return lipgloss.JoinHorizontal(lipgloss.Center, cmdStr, line, scrollPercentage)
 }
 
 func (m model) fpFooterView() string {
-	cmds := []string{"↑/↓/←/→ move", "t show dir tree", "q/ctrl+c quit"}
+	cmds := []string{"↑/↓/←/→ or w/a/s/d move", "F to top", "f to bottom", "t show dir tree", "q/ctrl+c quit"}
 
 	return buildHelperCmdString(cmds)
 }
