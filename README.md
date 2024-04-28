@@ -77,4 +77,7 @@ To use this tool, navigate to the directory you want to visualize in your termin
 ## Development <a name="dev"></a>
 ```bash
 go run ./cmd . -[flags]
+
+Build to executable
+go build -o {name} ./cmd
 ```
