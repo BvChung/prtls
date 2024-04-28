@@ -87,7 +87,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			viewHeaderHeight := lipgloss.Height(m.headerView())
 			viewFooterHeight := lipgloss.Height(m.viewFooterView())
 			verticalMarginHeight := viewHeaderHeight + viewFooterHeight
-			
+
 			// Delay viewport model creation to obtain full terminal height to allow scrolling
 			if !m.ready {
 				m.initViewport(msg, verticalMarginHeight, viewHeaderHeight)
@@ -186,7 +186,7 @@ func (m model) headerView() string {
 }
 
 func (m model) viewFooterView() string {
-	cmds := []string{"↑/↓/scroll or w/s (move)", "F (page up)", "f (page down)", "enter (save)", "b/backspace (return)", "q/ctrl+c (quit)"}
+	cmds := []string{"↑/↓/scroll or w/s move", "F page up", "f page down", "enter save", "b/backspace return", "q/ctrl+c quit"}
 
 	cmdStr := commandStyle.Render(buildHelperCmdString(cmds))
 	scrollPercentage := roundedBorderStyle.Render(headerStyle.Render(fmt.Sprintf("%3.f%%", m.viewport.ScrollPercent()*100)))
