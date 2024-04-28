@@ -22,7 +22,7 @@ Flags:
   -h, --h, -help, --help        help command
 
   -o string
-        -o, -o=, --o string     output file path
+        -o, -o=, --o string     output file path (will create a new file as long as the path is valid)
 
   -p string
         -p, -p=, --p string     optional initial directory path, defaults to current directory (default ".")
