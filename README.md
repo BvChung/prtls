@@ -7,6 +7,7 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 - [Usage](#usage)
 - [Demo](#demo)
 - [Development](#dev)
+- [Issues](#issues)
 
 ## Tech <a name="tech"></a>
 - [Go](https://go.dev/)
@@ -82,5 +83,5 @@ Build to executable
 go build -o {name} ./cmd
 ```
 
-## Issues
+## Issues  <a name="issues"></a>
 Create a new issue if there are any problems with this application or any suggestions you would like to make
