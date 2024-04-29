@@ -81,3 +81,6 @@ go run ./cmd . -[flags]
 Build to executable
 go build -o {name} ./cmd
 ```
+
+## Issues
+Create a new issue if there are any problems with this application or any suggestions you would like to make
