@@ -1,6 +1,6 @@
 # File Directory Tree Generator
 
-This command-line interface (CLI) terminal user interface allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories. Go to [releases](https://github.com/BvChung/prtls/releases) for the latest executable.
+This terminal user interface application allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories. Go to [releases](https://github.com/BvChung/prtls/releases) for the latest executable.
 
 ## Table of Contents
 - [Technologies](#tech)
