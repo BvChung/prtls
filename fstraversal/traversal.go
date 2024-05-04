@@ -19,12 +19,12 @@ const (
 func createTree(directory string, showHidden bool, root string) string {
 	lines := []string{}
 	lines = append(lines, rootStyle.Render(root))
-	traverseFsTree(directory, "", true, showHidden, &lines)
+	traverseFsTree(directory, "", showHidden, &lines)
 
 	return lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
 
-func traverseFsTree(path string, indent string, isLastFolder bool, showHidden bool, lines *[]string) error {
+func traverseFsTree(path string, offset string, showHidden bool, lines *[]string) error {
 	files, err := os.ReadDir(path)
 
 	if err != nil {
@@ -35,22 +35,21 @@ func traverseFsTree(path string, indent string, isLastFolder bool, showHidden bo
 
 	for i, file := range files {
 		if !isHiddenFile(file.Name()) || showHidden {
-			var prefix, subDirectoryIndent string
+			var prefix, subDirectoryOffset string
 
-			if (i == lastFileIndx && isLastFolder) || i == lastFileIndx {
-				prefix = indent + CornerDelimiter
-				subDirectoryIndent = indent + IndentationSpace
+			if i == lastFileIndx {
+				prefix = offset + CornerDelimiter
+				subDirectoryOffset = offset + IndentationSpace
 			} else {
-				prefix = indent + CrossDelimiter
-				subDirectoryIndent = indent + VerticalDelimiter
+				prefix = offset + CrossDelimiter
+				subDirectoryOffset = offset + VerticalDelimiter
 			}
 
 			*lines = append(*lines, formatOutputText(prefix, file.Name(), file.IsDir()))
 
 			if file.IsDir() {
 				nextFilePath := filepath.Join(path, file.Name())
-				newIsLastFolder := i == lastFileIndx && isLastFolder
-				traverseFsTree(nextFilePath, subDirectoryIndent, newIsLastFolder, showHidden, lines)
+				traverseFsTree(nextFilePath, subDirectoryOffset, showHidden, lines)
 			}
 		}
 	}

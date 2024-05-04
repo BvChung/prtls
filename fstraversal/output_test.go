@@ -70,7 +70,7 @@ func TestTreeCleaning(t *testing.T) {
 	for _, d := range testData {
 		t.Run("Test tree cleaning", func(t *testing.T) {
 			lines := []string{}
-			if err := traverseFsTree(d.path, "", true, false, &lines); err != nil {
+			if err := traverseFsTree(d.path, "", false, &lines); err != nil {
 				t.Fatal(err)
 			}
 

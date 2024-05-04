@@ -40,7 +40,7 @@ func TestFsTreeTraversal(t *testing.T) {
 		t.Run("Test tree traversal", func(t *testing.T) {
 			lines := []string{}
 
-			if err := traverseFsTree(d.path, "", true, false, &lines); err != nil {
+			if err := traverseFsTree(d.path, "", false, &lines); err != nil {
 				t.Fatal(err)
 			}
 
@@ -53,7 +53,7 @@ func TestFsTreeTraversal(t *testing.T) {
 		lines := []string{}
 		expected := fmt.Sprintf("error reading directory, open %s: The system cannot find the file specified.", path)
 
-		err := traverseFsTree(path, "", true, false, &lines)
+		err := traverseFsTree(path, "", false, &lines)
 		assert.EqualError(err, expected)
 	})
 }
@@ -82,7 +82,7 @@ func TestTreeBuilding(t *testing.T) {
 		t.Run("Test tree building", func(t *testing.T) {
 			lines := []string{}
 
-			if err := traverseFsTree(d.path, "", true, false, &lines); err != nil {
+			if err := traverseFsTree(d.path, "", false, &lines); err != nil {
 				t.Fatal(err)
 			}
 
