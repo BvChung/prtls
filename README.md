@@ -1,12 +1,13 @@
 # File Directory Tree Generator
 
-This command-line interface (CLI) terminal user interface allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories.
+This terminal user interface application allows users to dynamically view files in directories and generate a visual representation of the directory tree structure for the current directory to an output text file. It's a handy utility for quickly visualizing the layout of your project's files and directories. Go to [releases](https://github.com/BvChung/prtls/releases) for the latest executable.
 
 ## Table of Contents
 - [Technologies](#tech)
 - [Usage](#usage)
 - [Demo](#demo)
 - [Development](#dev)
+- [Issues](#issues)
 
 ## Tech <a name="tech"></a>
 - [Go](https://go.dev/)
@@ -15,15 +16,15 @@ This command-line interface (CLI) terminal user interface allows users to dynami
 
 ## Usage <a name="usage"></a>
 ```bash
-go build -o ./{executable name} ./cmd
-
 Usage:
   ./prtls - [flags]
 
 Flags:
-  -h help command
+  -h, --h, -help, --help        help command
+
   -o string
-        -o, -o=, --o string     output file path
+        -o, -o=, --o string     output file path (will create a new file as long as the path is valid)
+
   -p string
         -p, -p=, --p string     optional initial directory path, defaults to current directory (default ".")
 ```
@@ -36,7 +37,7 @@ Build executable: go build -o ./prtls.exe ./cmd
 ./prtls.exe -p . -o file.txt
 ```
 <div align="center">
-  <video src="https://github.com/BvChung/prtls/assets/88690065/af760cbf-0266-4646-a0fb-104de318e36d"></video>
+  <video src="https://github.com/BvChung/prtls/assets/88690065/8acd1402-fc12-4f58-9091-dfb03df87062"></video>
 </div>
 
 ## File Structure
@@ -77,4 +78,10 @@ To use this tool, navigate to the directory you want to visualize in your termin
 ## Development <a name="dev"></a>
 ```bash
 go run ./cmd . -[flags]
+
+Build to executable
+go build -o {name} ./cmd
 ```
+
+## Issues  <a name="issues"></a>
+Create a new issue if there are any problems with this application or any suggestions you would like to make
